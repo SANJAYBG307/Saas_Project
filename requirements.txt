@@ -1,0 +1,40 @@
+# SaaS Platform - Core Dependencies
+# Python Version: 3.9+
+
+# Django Framework
+Django==4.2.7
+djangorestframework==3.14.0
+
+# Database
+mysqlclient==2.2.0
+django-environ==0.11.2
+
+# Authentication & Security
+django-allauth==0.57.0
+djangorestframework-simplejwt==5.3.0
+django-cors-headers==4.3.1
+
+# Multi-tenant Support (simplified)
+django-tenants==3.5.0
+
+# Payment Integration (simplified - no conflicts)
+stripe==7.8.0
+
+# Admin Interface
+django-admin-interface==0.28.6
+django-colorfield==0.10.1
+
+# Utilities
+Pillow==10.1.0
+python-decouple==3.8
+
+# Production Server
+gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Development Tools (optional for Docker)
+django-debug-toolbar==4.2.0
+
+# Testing (optional for Docker)
+pytest==7.4.3
+pytest-django==4.7.0

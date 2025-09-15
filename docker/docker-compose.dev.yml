@@ -1,0 +1,88 @@
+# Development Docker Compose - Simplified for development
+
+services:
+  # Database service
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: saas_platform
+      MYSQL_USER: saas_user
+      MYSQL_PASSWORD: saas_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_dev_data:/var/lib/mysql
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - saas_dev_network
+
+  # Redis service
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - saas_dev_network
+
+  # Development web service (with volume mounting for live reload)
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: development
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Development settings
+      DEBUG: "True"
+      SECRET_KEY: "dev-secret-key-not-for-production"
+
+      # Database settings
+      DB_HOST: db
+      DB_NAME: saas_platform
+      DB_USER: saas_user
+      DB_PASSWORD: saas_password
+      DB_PORT: 3306
+
+      # Redis settings
+      REDIS_URL: "redis://redis:6379/0"
+
+      # Development email settings (console backend)
+      EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
+
+      # Allowed hosts for development
+      ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0"
+
+    volumes:
+      # Mount source code for live reload
+      - ../backend:/app/backend
+      - ../frontend:/app/backend/static
+      - dev_media_volume:/app/backend/media
+
+    depends_on:
+      - db
+      - redis
+
+    networks:
+      - saas_dev_network
+
+    # Override command for development server
+    command: python manage.py runserver 0.0.0.0:8000
+
+volumes:
+  mysql_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
+  dev_media_volume:
+    driver: local
+
+networks:
+  saas_dev_network:
+    driver: bridge
