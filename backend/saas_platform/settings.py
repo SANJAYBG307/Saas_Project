@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'saas_platform.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_tenants.postgresql_backend',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': config('DB_NAME', default='saas_platform'),
-        'USER': config('DB_USER', default='root'),
-        'PASSWORD': config('DB_PASSWORD', default='password'),
+        'USER': config('DB_USER', default='Saas_User'),
+        'PASSWORD': config('DB_PASSWORD', default='Saas@123'),
         'HOST': config('DB_HOST', default='localhost'),
         'PORT': config('DB_PORT', default='3306'),
         'OPTIONS': {
@@ -195,8 +195,9 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY', default='')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='')
 
-CELERY_BROKER_URL = config('REDIS_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = config('REDIS_URL', default='redis://localhost:6379/0')
+# Celery settings - Optional for local development
+# CELERY_BROKER_URL = config('REDIS_URL', default='redis://localhost:6379/0')
+# CELERY_RESULT_BACKEND = config('REDIS_URL', default='redis://localhost:6379/0')
 
 LOGGING = {
     'version': 1,

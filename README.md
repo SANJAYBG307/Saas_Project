@@ -1,4 +1,9 @@
-# CloudFlow - SaaS Platform
+# CloudFlow - Professional SaaS Platform
+
+[![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://python.org)
+[![Django Version](https://img.shields.io/badge/django-4.2-green.svg)](https://djangoproject.com)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## What is CloudFlow?
 
@@ -83,54 +88,43 @@ saas_platform/
 
 ## 🚀 Quick Start Guide
 
-### Prerequisites (What You Need Installed):
-- **Python 3.9+** - Programming language
-- **MySQL 8.0+** - Database server
-- **Node.js** (optional) - For development tools
-- **Git** - Version control
+### Prerequisites
+- **Python 3.9+**
+- **MySQL 8.0+**
+- **Git**
 
-### 1. Clone the Project
+### 1. Clone and Setup
 ```bash
 git clone <your-repository-url>
 cd ProjectC
+
+# Install dependencies
+make install-dev
+
+# Setup database (MySQL)
+mysql -u root -p
+CREATE DATABASE saas_platform CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'Saas_User'@'localhost' IDENTIFIED BY 'Saas@123';
+GRANT ALL PRIVILEGES ON saas_platform.* TO 'Saas_User'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+# Run migrations
+make migrate
+
+# Create superuser
+make createsuperuser
+
+# Start development server
+make run
 ```
 
-### 2. Set Up Environment Variables
+### 2. Development Commands
 ```bash
-# Copy example environment file
-cp .env.example .env
-
-# Edit .env with your settings:
-# - Database credentials
-# - Email settings (for sending verification emails)
-# - Stripe keys (for payments)
-```
-
-### 3. Install Dependencies
-```bash
-# Install Python packages
-pip install -r requirements.txt
-```
-
-### 4. Set Up Database
-```bash
-# Create database (run this in MySQL)
-mysql -u root -p < database/schema.sql
-
-# Run Django migrations
-cd backend
-python manage.py migrate
-python manage.py migrate --database=default
-```
-
-### 5. Create Admin User
-```bash
-python manage.py createsuperuser
-```
-
-### 6. Start the Server
-```bash
-python manage.py runserver
+make test          # Run tests
+make lint          # Check code quality
+make format        # Format code
+make check         # Django system check
 ```
 
 ### 7. Open Your Browser
